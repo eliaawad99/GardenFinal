@@ -1,26 +1,39 @@
 <script setup>
-import { onMounted, ref } from 'vue';
+import { defineExpose, defineModel, ref } from 'vue';
 
 const model = defineModel({
-    type: String,
-    required: true,
+  type: String,
+  required: true,
 });
 
-const input = ref(null);
+const inputRef = ref(null);
 
-onMounted(() => {
-    if (input.value.hasAttribute('autofocus')) {
-        input.value.focus();
-    }
+defineExpose({
+  focus: () => inputRef.value.focus(),
 });
-
-defineExpose({ focus: () => input.value.focus() });
 </script>
 
 <template>
+  <div class="relative bg-transparent w-[400px] h-[48px] mt-6 border-0">
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="400"
+      height="48"
+      viewBox="0 0 400 48"
+      fill="none"
+      class="absolute inset-0 w-full h-full"
+    >
+      <path
+        d="M7.07928 1.01367e-05C4.05978 1.02157e-05 1.46808 1.13394 0.452423 2.74046C-0.0545044 3.5423 0.0655518 4.55107 0.195618 5.49075L5.27386 42.1761C5.40393 43.1158 5.33487 44.1201 5.75745 44.9694C6.61655 46.6961 9.26663 47.9723 12.4456 48L392.822 47.9403C395.567 47.9643 397.981 47.0478 399.19 45.6807C400.056 44.7006 399.873 43.2683 399.624 41.9842L392.703 6.40335C392.454 5.1193 392.542 3.68498 391.794 2.61174C390.729 1.08363 388.211 -7.74885e-08 385.252 0L7.07928 1.01367e-05Z"
+        fill="#F7EDBD"
+      />
+    </svg>
     <input
-        class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm"
-        v-model="model"
-        ref="input"
+      class="absolute inset-0 z-10 w-full h-full border-0 bg-transparent px-4 py-2 ring-transparent focus:ring-transparent font-irish-grover"
+      v-model="model"
+      ref="inputRef"
+      :autofocus="$attrs.autofocus"
+      :placeholder="$attrs.placeholder"
     />
+  </div>
 </template>
