@@ -1,5 +1,13 @@
 <script setup>
 import ProfileImage from '@/Assets/ProfileImage.vue';
+import PopupProfile from '@/Components/PopupProfile.vue';
+import { ref } from 'vue';
+
+const isPopupProfileVisible = ref(false);
+
+const togglePopupProfile = () => {
+    isPopupProfileVisible.value = !isPopupProfileVisible.value;
+};
 </script>
 
 <template>
@@ -12,11 +20,12 @@ import ProfileImage from '@/Assets/ProfileImage.vue';
                 <div class="flex justify-center">
                     <ProfileImage></ProfileImage>
                     <div class="flex flex-col justify-center items-start ml-2">
-                        <p>{{ $page.props.auth.user.name }}</p>
-                        <p>Edit Profile</p>
+                        <p class="text-custom-yellow">{{ $page.props.auth.user.name }}</p>
+                        <p @click="togglePopupProfile" class="cursor-pointer text-edit">Edit Profile</p>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+    <PopupProfile v-if="isPopupProfileVisible"></PopupProfile>
 </template>

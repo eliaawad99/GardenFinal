@@ -31,7 +31,7 @@ const submit = () => {
     <div v-if="isPopupVisible" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
         <div class="h-700 w-1000 pl-11 pt-11 bg-custom-yellow rounded-custom-7 font-irish-grover">
             <div class="flex">
-                <img src="/images/CloseIcon.svg">
+                <img src="/images/CloseIcon.svg" @click="closePopup">
                 <p class="text-custom-green text-2xl ml-6">Add your Plant Child</p>
             </div>
             <form @submit.prevent="submit">

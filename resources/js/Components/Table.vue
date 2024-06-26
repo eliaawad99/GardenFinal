@@ -9,8 +9,8 @@ defineProps({
 
 <template>
 
-        <table class="w-full h-full divide-gray-200 border-separate border-spacing-y-2">
-            <thead class=" bg-transparent h-[11.4%] text-custom-yellow" style="background-image: url('/images/TableBackground.svg'); background: cover; background-repeat: no-repeat; background-size: cover">
+        <table class="w-full max-h-full divide-gray-200 border-separate border-spacing-y-2">
+            <thead class=" bg-transparent h-20 text-custom-yellow" style="background-image: url('/images/TableBackground.svg'); background: cover; background-repeat: no-repeat; background-size: cover">
                 
                 <tr>
                     <th></th>
@@ -28,7 +28,7 @@ defineProps({
                 </tr>
             </thead>
             <tbody class="bg-transparent divide-y divide-gray-200 text-center text-header-background">
-                <tr v-for="plant in plants" :key="plant.id" style="background-image: url('/images/TableBackgroundBody.svg'); background: cover; background-repeat: no-repeat; background-size: cover">
+                <tr class="h-20" v-for="plant in plants" :key="plant.id" style="background-image: url('/images/TableBackgroundBody.svg'); background: cover; background-repeat: no-repeat; background-size: cover">
                     <td>{{ plant.image }}</td>
                     <td>{{ plant.name }}</td>
                     <td>{{ plant.species }}</td>

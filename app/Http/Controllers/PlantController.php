@@ -19,7 +19,6 @@ class PlantController extends Controller
     {
         $plants = Plant::all();
         
-
         return Inertia('Home', [
             'plants' => $plants,
         ]);

@@ -1,4 +1,5 @@
 <script setup>
+import NoDataImage from '@/Components/NoDataImage.vue';
 import Popup from '@/Components/Popup.vue';
 import SideBar from '@/Components/SideBar.vue';
 import Table from '@/Components/Table.vue';
@@ -26,10 +27,11 @@ const togglePopup = () => {
                 <p>search bar</p>
             </div>
             <Table :plants="plants"></Table>
+            <NoDataImage></NoDataImage>
         </div>
         <div class="fixed bottom-0 right-0 mb-6 mr-6">
-            <img src="/images/AddButton.svg" alt="Add Button" @click="togglePopup">
+            <img class="cursor-pointer" src="/images/AddButton.svg" alt="Add Button" @click="togglePopup">
         </div>
+        <Popup v-if="isPopupVisible" @close="togglePopup" />
     </div>
-    <Popup v-if="isPopupVisible" @close="togglePopup" />
 </template>

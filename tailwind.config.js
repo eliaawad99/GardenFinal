@@ -15,10 +15,12 @@ export default {
             width:{
                 '1000': '1000px',
                 '400': '400px',
+                '563': '563px',
             },
             height:{
                 '700': '700px',
                 '400': '400px',
+                '760': '760px',
             },
             padding: {
                 '500': '750px',
@@ -43,6 +45,8 @@ export default {
                 'custom-green': '#00992C',
                 'input-color': '#F7EDBD',
                 'header-background': '#40341D',
+                'cursor': '#F27114',
+                'edit': '#E8FF5B',
               },
             fontFamily: {
                 sans: ['Figtree', ...defaultTheme.fontFamily.sans],
