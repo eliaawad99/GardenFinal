@@ -9,6 +9,8 @@ defineProps({
     plants: Array,
 });
 
+console.log(plants.length)
+
 const isPopupVisible = ref(false);
 
 const togglePopup = () => {
