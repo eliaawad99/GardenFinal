@@ -21,7 +21,7 @@ const togglePopupProfile = () => {
                     <ProfileImage></ProfileImage>
                     <div class="flex flex-col justify-center items-start ml-2">
                         <p class="text-custom-yellow">{{ $page.props.auth.user.name }}</p>
-                        <p @click="togglePopupProfile" class="cursor-pointer text-edit">Edit Profile</p>
+                        <p @click="togglePopupProfile" class="hover:Custom-Cursor text-edit">Edit Profile</p>
                     </div>
                 </div>
             </div>

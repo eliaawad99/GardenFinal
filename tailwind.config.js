@@ -55,5 +55,13 @@ export default {
         },
     },
 
-    plugins: [forms],
+    plugins: [forms,
+        function ({addUtilities}){
+            addUtilities({
+                '.Custom-Cursor':{
+                    cursor: 'url(/images/Custom-Cursor.svg), auto',
+                },
+            }, ['responsive', 'hover']);
+        },
+    ],
 };

@@ -9,9 +9,9 @@ const buttonText = "Add a Plant, Child";
 <template>
     <div class="flex flex-col justify-center items-center">
         <div>
-        <TreeBackground class="absolute mt-10"></TreeBackground>
-        <img class="relative" src="/images/Tree.svg"/>
-    </div>
+            <TreeBackground class="absolute mt-10"></TreeBackground>
+            <img class="relative" src="/images/Tree.svg" />
+        </div>
         <p class="pt-16 w-80 text-2xl text-center text-header-background">You don't have any Plants in your Garden.</p>
         <ButtonContainer class="text-2xl" :buttonText="buttonText"></ButtonContainer>
     </div>

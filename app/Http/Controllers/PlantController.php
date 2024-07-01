@@ -15,12 +15,12 @@ class PlantController extends Controller
      */
     // app/Http/Controllers/PlantController.php
 
-    public function index()
+      public function index(Request $request)
     {
-        $plants = Plant::all();
-        
-        return Inertia('Home', [
-            'plants' => $plants,
+        $plants = Plant::paginate(7);
+
+        return Inertia::render('Home', [
+            'plants' => $plants, 
         ]);
     }
 

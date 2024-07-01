@@ -13,7 +13,6 @@ const handleSwitch = (event) => {
     emit('switchComponent');
 }
 
-
 const buttonText = 'Hop Back In'; // Set the button text here or retrieve dynamically
 
 const form = useForm({

@@ -23,5 +23,6 @@ defineExpose({
       :autofocus="$attrs.autofocus"
       :placeholder="$attrs.placeholder"
     />
+    <slot/>
   </div>
 </template>
