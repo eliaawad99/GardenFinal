@@ -1,108 +1,144 @@
 <script setup>
-import ButtonContainer from '@/Assets/ButtonContainer.vue';
-import { router, usePage } from '@inertiajs/vue3';
-import { ref } from 'vue';
-import TextInput from './TextInput.vue';
+import ButtonContainer from "@/Assets/ButtonContainer.vue";
+import EmptyImage from "@/Assets/EmptyImage.vue";
+import { router, useForm, usePage } from "@inertiajs/vue3";
+import TextInput from "./TextInput.vue";
+
+const emit = defineEmits(["close"]);
 
 const user = usePage().props.auth.user;
 
-const isPopupProfileVisible = ref(true);
-
 const closePopupProfile = () => {
-    isPopupProfileVisible.value = false;
+    emit("close");
 };
 
-const buttonText = 'Save Changes';
+const buttonText = "Save Changes";
 
-const form = ref({
-    image: '',
+const form = useForm({
+    image: "",
+    imageUrl: user.image,
     name: user.name,
     email: user.email,
-    oldPassword: '',
-    newPassword: '',
-    confirmPassword: ''
+    current_password: '',
+    password: '',
+    password_confirmation: '',
 });
 
 const handleFileUpload = (e) => {
-    form.value.image = e.target.files[0];
-}
+    const file = e.target.files[0];
+    form.image = file;
+    form.imageUrl = URL.createObjectURL(file);
+};
 
-function submit() {
-    const formData = new FormData();
-    formData.append('name', form.value.name);
-    formData.append('email', form.value.email);
-    formData.append('oldPassword', form.value.oldPassword);
-    formData.append('newPassword', form.value.newPassword);
-    formData.append('confirmPassword', form.value.confirmPassword);
-    formData.append('image', form.value.image);
-
-    console.log(formData.get('name'))
-    console.log(formData.get('oldPassword'))
-    console.log(formData.get('newPassword'))
-    console.log(formData.get('confirmPassword'))
-
-    formData.append('_method', 'PUT');
-
-    router.post(route('profile.update'), formData, {
-        forceFormData: true,
-        onError: (error) => {
-            console.log(error);
+const submit = () =>{
+    form.post(route('profile.update'),{
+        onSuccess: () => {
+            emit("close");
         },
-        onStart: (value) => {
-            console.log(value);
-        }
     });
-}
-
-// const submit = () => {
-//     form.patch(route('profile.update'), {
-//         onFinish: () => {
-//             form.reset('oldPassword', 'newPassword', 'confirmPassword');
-//             closePopupProfile();
-//         },
-//     });
-// };
+};
 
 const logout = () => {
-    form.post(route('logout'), {
+    router.post(route("logout"), {
         onFinish: () => {
-            window.location.href = route('testing');
-        }
+            window.location.href = route("testing");
+        },
     });
 };
 </script>
 
 <template>
-    <div v-if="isPopupProfileVisible"
-        class="fixed inset-0 flex justify-center items-center bg-black bg-opacity-50 z-10">
-        <div class="bg-custom-yellow px-14 py-11 rounded-custom-7 skew-y-0.5">
-            <div class="flex items-center justify-between pb-2">
+    <div
+        class="fixed inset-0 flex justify-center items-center bg-black bg-opacity-50 z-10"
+    >
+        <div
+            class="bg-custom-yellow pl-12 pr-16 pt-11 pb-10 skew-y-1 rounded-tl-[25px] rounded-tr-[40px] rounded-br-[15px] rounded-bl-[30px]"
+        >
+            <div class="flex items-center justify-between pb-10">
                 <div class="flex">
-                    <img src="/images/CloseIcon.svg" @click="closePopupProfile" class="cursor-pointer">
-                    <p class="text-custom-green text-2xl ml-6">Edit Farmer Profile</p>
+                    <img
+                        src="/images/CloseIcon.svg"
+                        class="custom-cursor"
+                        @click="closePopupProfile"
+                    />
+                    <p class="text-custom-green text-2xl ml-6">
+                        Edit Farmer Profile
+                    </p>
                 </div>
-                <p class="text-cursor" @click="logout">Log Out</p>
+                <p class="text-cursor custom-cursor" @click="logout">Log Out</p>
             </div>
             <div class="flex justify-center">
-                <div>
-                    <form @submit.prevent="submit" enctype="multipart/form-data">
-                        <input id="image" type="file" class="h-28 skew-x-3 flex items-center" @change="handleFileUpload"
-                            autofocus placeholder="Upload Image">
-                        <img class="pl-[24px]" src="/images/EmptyImage.svg" />
-                        <TextInput id="name" type="text" v-model="form.name" autofocus placeholder="Name" />
-                        <TextInput id="email" type="email" v-model="form.email" autofocus placeholder="Email" />
-                        <TextInput id="oldPassword" type="password" v-model="form.oldPassword" autofocus
-                            placeholder="Old Password" />
-                        <TextInput id="newPassword" type="password" v-model="form.newPassword" autofocus
-                            placeholder="New Password" />
-                        <TextInput id="confirmPassword" type="password" v-model="form.confirmPassword" autofocus
-                            placeholder="Confirm New Password" />
-                        <div class="flex justify-center pt-4">
-                            <ButtonContainer class="text-2xl" :buttonText="buttonText">
-                            </ButtonContainer>
-                        </div>
-                    </form>
-                </div>
+                <form @submit.prevent="submit" enctype="multipart/form-data">
+                    <div
+                        class="flex justify-center items-center bg-input-color h-28 skew-x-3 w-[400px] relative cursor-pointer"
+                    >
+                        <label
+                            for="image"
+                            class="absolute inset-0 flex items-center cursor-pointer"
+                        >
+                            <EmptyImage
+                                class="ml-4"
+                                :imageUrl="form.imageUrl"
+                                :width="56" :height="56"
+                            />
+                            <span class="pl-4 text-custom-gold">
+                                Upload Image
+                            </span>
+                        </label>
+                        <input
+                            id="image"
+                            type="file"
+                            class="absolute inset-0 opacity-0 cursor-pointer"
+                            @change="handleFileUpload"
+                        />
+                    </div>
+
+                    <TextInput
+                        id="name"
+                        type="text"
+                        v-model="form.name"
+                        autofocus
+                        placeholder="Name"
+                    />
+                    <TextInput
+                        id="email"
+                        type="email"
+                        v-model="form.email"
+                        autofocus
+                        placeholder="Email"
+                    />
+                    <TextInput
+                        id="oldPassword"
+                        type="password"
+                        v-model="form.current_password"
+                        autofocus
+                        placeholder="Old Password"
+                    />
+                    <div v-if="form.errors.current_password" class="text-red-500 pt-2">{{ form.errors.current_password }}</div>
+                    <TextInput
+                        id="newPassword"
+                        type="password"
+                        v-model="form.password"
+                        autofocus
+                        placeholder="New Password"
+                    />
+                    <div v-if="form.errors.password" class="text-red-500 pt-2">{{ form.errors.password }}</div>
+                    <TextInput
+                        id="password_confirmation"
+                        type="password"
+                        v-model="form.password_confirmation"
+                        autofocus
+                        placeholder="Confirm New Password"
+                    />
+                    <div v-if="form.errors.password_confirmation" class="text-red-500 pt-2">{{ form.errors.password_confirmation }}</div>
+                    <div class="flex justify-center pt-4">
+                        <ButtonContainer
+                            class="text-2xl"
+                            :buttonText="buttonText"
+                        >
+                        </ButtonContainer>
+                    </div>
+                </form>
             </div>
         </div>
     </div>

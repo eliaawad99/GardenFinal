@@ -12,32 +12,8 @@ export default {
 
     theme: {
         extend: {
-            width:{
-                '1000': '1000px',
-                '400': '400px',
-                '563': '563px',
-            },
-            height:{
-                '700': '700px',
-                '400': '400px',
-                '760': '760px',
-            },
-            padding: {
-                '500': '750px',
-            },
-            borderRadius: {
-                'custom-1': '10px',
-                'custom-2': '15px',
-                'custom-3': '20px',
-                'custom-4': '25px',
-                'custom-5': '30px',
-                'custom-6': '35px',
-                'custom-7': '50px',
-            },
-            skew: {
-                '0.5': '0.5deg',
-                '0.25': '0.25deg',
-                '0.75': '0.75deg',
+            backgroundImage: {
+                'pagination-hover': "url('/images/PaginationBackgroundHover.svg')",
               },
             colors: {
                 'custom-yellow': '#FFF8D2',
@@ -49,7 +25,7 @@ export default {
                 'edit': '#E8FF5B',
               },
             fontFamily: {
-                sans: ['Figtree', ...defaultTheme.fontFamily.sans],
+                sans: ['irish-grover', ...defaultTheme.fontFamily.sans],
                 'irish-grover': ['Irish Grover', 'cursive'],
             },
         },
@@ -58,7 +34,7 @@ export default {
     plugins: [forms,
         function ({addUtilities}){
             addUtilities({
-                '.Custom-Cursor':{
+                '.custom-cursor':{
                     cursor: 'url(/images/Custom-Cursor.svg), auto',
                 },
             }, ['responsive', 'hover']);

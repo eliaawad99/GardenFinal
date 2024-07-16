@@ -33,39 +33,41 @@ class ProfileController extends Controller
     {
         $user = $request->user();
 
+    
         if ($request->has('email') && $user->email !== $request->input('email')) {
             $user->email = $request->input('email');
             $user->email_verified_at = null;
         }
-
+    
         if ($request->has('name')) {
             $user->name = $request->input('name');
         }
-
+    
         if ($request->hasFile('image')) {
             $image = $request->file('image');
             $imageName = time() . '.' . $image->getClientOriginalExtension();
-            $image->move(public_path('images'), $imageName); // Move image to public/images directory
-            // You can save $imageName to the database or use it as needed
+            $image->move(public_path('images'), $imageName);
+            $user->image = 'images/' . $imageName; 
         }
 
+    
         $user->save();
+    
+        if ($request->filled('current_password') && $request->filled('password') && $request->filled('password_confirmation')) {
 
-        // Update password if provided
-        if ($request->filled('oldPassword') && $request->filled('newPassword') && $request->filled('confirmPassword')) {
             $validated = $request->validate([
-                'oldPassword' => ['required', 'current_password'],
-                'newPassword' => ['required', 'confirmed', Password::defaults()],
+                'current_password' => ['required', 'current_password'],
+                'password' => ['required', Password::defaults(), 'confirmed'],
             ]);
     
             $user->update([
-                'password' => Hash::make($validated['newPassword']),
+                'password' => Hash::make($validated['password']),
             ]);
         }
-
+    
         return Redirect::route('plants.index')->with('status', 'Profile updated!');
     }
-
+    
 
 
     /**

@@ -10,22 +10,23 @@ return new class extends Migration {
      */
     public function up(): void
     {
-        Schema::create('plants', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('user_id')->references('id')->on('users');
-            $table->string('name');
-            $table->string('image');
-            $table->string('species');
-            $table->integer('watering');
-            $table->date('date_planted');
-            $table->string('soil_type');
-            $table->string('drainage');
-            $table->string('fertilizer');
-            $table->integer('sunlight');
-            $table->string('humidity');
-            $table->string('notes');
-            $table->timestamps();
-        });
+       Schema::create('plants', function (Blueprint $table) {
+    $table->id();
+    $table->foreignId('user_id')->constrained()->onDelete('cascade');
+    $table->string('name');
+    $table->string('image');
+    $table->string('species');
+    $table->integer('watering');
+    $table->date('date_planted');
+    $table->string('soil_type');
+    $table->string('drainage');
+    $table->string('fertilizer');
+    $table->integer('sunlight');
+    $table->string('humidity');
+    $table->string('notes');
+    $table->timestamps();
+});
+
     
     }
 

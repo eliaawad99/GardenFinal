@@ -16,23 +16,22 @@ Route::get('/welcome', function () {
 });
 
 Route::get('/', function(){
-    return Inertia::render('Testing');
-})->name('testing');
+    return Inertia::render('LoginPage');
+})->name('loginPage');
 
-Route::get('/dashboard', function(){
-    return Inertia::render('Dashboard');
-})->name('dashboard');
-
-Route::get('/plants', [PlantController::class, 'index'])->name('plants.index');
+Route::get('/registerPage', function () {
+    return Inertia::render('RegisterPage');
+})->name('registerPage');
 
 Route::middleware('auth')->group(function () {
-    Route::get('/home', [PlantController::class, 'index'])->name('plants.index');
-
+    Route::get('/plants', [PlantController::class, 'index'])->name('plants.index');
+    Route::post('/plants', [PlantController::class, 'store'])->name('plants.store');
+    Route::post('/plants/{plantId}', [PlantController::class, 'update'])->name('plants.update');
 });
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::put('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::post('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
