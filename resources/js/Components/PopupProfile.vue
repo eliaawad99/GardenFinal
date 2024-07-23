@@ -135,8 +135,7 @@ const logout = () => {
                         <ButtonContainer
                             class="text-2xl"
                             :buttonText="buttonText"
-                        >
-                        </ButtonContainer>
+                        />
                     </div>
                 </form>
             </div>

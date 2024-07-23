@@ -82,8 +82,6 @@ const submit = () => {
 
             <div class="flex flex-col items-center justify-end mt-6">
                 <ButtonContainer
-                    class="{ 'opacity-25': form.processing }"
-                    :disabled="form.processing"
                     :buttonText="buttonText"
                 />
                 <div class="mt-5">

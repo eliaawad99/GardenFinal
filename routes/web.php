@@ -23,6 +23,7 @@ Route::get('/registerPage', function () {
     return Inertia::render('RegisterPage');
 })->name('registerPage');
 
+
 Route::middleware('auth')->group(function () {
     Route::get('/plants', [PlantController::class, 'index'])->name('plants.index');
     Route::post('/plants', [PlantController::class, 'store'])->name('plants.store');

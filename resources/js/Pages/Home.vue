@@ -21,11 +21,21 @@ const params = new URLSearchParams(uri);
 const isNoLink = computed (() => props.plants.data.length === 0);
 
 const searchTerm = ref(params.get("searchTest") || "");
+const currentSortKey = ref(params.get('sort_by') || null);
+const currentSortOrder = ref(params.get('sort_order') || 'asc');
 
 const performSearch = () => {
     router.get(route("plants.index"), {
         searchTest: searchTerm.value,
+        sortKey: currentSortKey.value,
+        sortOrder: currentSortOrder.value,
     });
+};
+
+const handleSort = ({sortBy,sortOrder}) => {
+    currentSortKey.value = sortBy;
+    currentSortOrder.value = sortOrder;
+    performSearch();
 };
 
 const isNoData = computed(() => !params.get("searchTest") && props.plants.data.length === 0);
@@ -77,10 +87,10 @@ const handleClose = () => {
             </div>
             </SearchInput>
             </div>
-            <Table :plants="plants" @edit="openEditPopup"></Table>
+            <Table :plants="plants" @edit="openEditPopup" @sort="handleSort"></Table>
             <Pagination v-if="!isNoLink" :links="plants.links"/>
             <div class="flex items-center justify-center">
-                <NoDataImage v-if="isNoData"></NoDataImage>
+                <NoDataImage @open="togglePopup" v-if="isNoData"></NoDataImage>
                 <p v-if="noResultsFound" class="text-custom-gold text-2xl">
                     No results found
                 </p>

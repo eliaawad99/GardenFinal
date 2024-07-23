@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect; // Import the Redirect facade
 use Inertia\Inertia;
 use App\Models\Plant; // Make sure to import the Plant model if not already imported
+use Illuminate\Support\Facades\Auth; // Import Auth facade
 
 
 class PlantController extends Controller
@@ -18,19 +19,39 @@ class PlantController extends Controller
 
     public function index(Request $request)
     {
+        $userId = Auth::id(); // Retrieve the authenticated user's ID
         $query = Plant::query();
 
+        // Filter plants by authenticated user's ID
+        $query->where('user_id', $userId);
+    
         if ($request->has('searchTest')) {
             $search = $request->searchTest;
             $query->where('name', 'like', "%$search%");
         }
+    
+        if ($request->has('sortKey')) {
+            $sortBy = $request->sortKey;
+            $sortOrder = $request->sortOrder;
 
+            $validSortColumns = [
+                'name', 'species', 'watering', 'date_planted', 'soil_type', 
+                'drainage', 'fertilizer', 'sunlight', 'humidity', 'notes'
+            ];
+            
+            if (in_array($sortBy, $validSortColumns)) {
+                $query->orderBy($sortBy, $sortOrder);
+            }
+        }
+    
         $plants = $query->paginate(7);
-
+    
         return Inertia::render('Home', [
             'plants' => $plants,
         ]);
     }
+    
+
 
 
 
@@ -47,17 +68,21 @@ class PlantController extends Controller
      */
     public function store(StorePlantsRequest $request)
     {
+
         $user = $request->user();
+        $imageName = null; // Initialize the $imageName variable to null
         if ($request->hasFile('image')) {
             $image = $request->file('image');
             $imageName = time() . '.' . $image->getClientOriginalExtension();
             $image->move(public_path('images'), $imageName);
             $user->image = 'images/' . $imageName;
+        }
 
+           
             Plant::create([
             'user_id' => $user->id,
             'name' => $request->name,
-            'image' => 'images/' . $imageName,
+            'image' => $imageName ? 'images/' . $imageName : null,
             'species' => $request->species,
             'watering' => $request->watering,
             'date_planted' => $request->date_planted,
@@ -70,8 +95,7 @@ class PlantController extends Controller
         ]);
 
             return Redirect::route('plants.index');
-        }
-        return Redirect::back();
+        
     }
 
     /**
@@ -100,6 +124,7 @@ class PlantController extends Controller
         $plant = Plant::findOrFail($id);
 
         // Update the plant's attributes
+        $plant->user_id = Auth::user()->id;
         $plant->name = $request->input('name');
         $plant->species = $request->input('species');
         $plant->watering = $request->input('watering');
@@ -111,6 +136,7 @@ class PlantController extends Controller
         $plant->humidity = $request->input('humidity');
         $plant->notes = $request->input('notes');
 
+
         // Handle image upload if provided
         if ($request->hasFile('image')) {
             $image= $request->file('image');
@@ -118,6 +144,7 @@ class PlantController extends Controller
             $image->move(public_path('images'), $imageName);
             $plant->image = 'images/' . $imageName;
         }
+
 
         // Save the updated plant
         $plant->save();

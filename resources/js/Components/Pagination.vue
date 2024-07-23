@@ -16,7 +16,7 @@ const props = defineProps({
                 'text-custom-yellow': link.active,
                 'text-header-background': !link.active
             }" :style="{ backgroundImage: link.active ? 'url(/images/PaginationBackground.svg)' : '' }">
-            <span class="relative z-10" v-html="link.label"></span>
+            <span  v-html="link.label"></span>
         </Link>
     </div>
 </template>

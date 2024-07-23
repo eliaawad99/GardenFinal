@@ -7,13 +7,11 @@ import Register from "@/Components/Register.vue";
 
 <template>
     <div
-        class="bg-cover h-screen overflow-hidden"
-        style="background-image: url('/images/Background.png')"
+        class="bg-cover h-screen overflow-hidden bg-[url('/images/Background.png')]"
     >
         <div class="grid grid-cols-2">
-            <div class="h-screen">
-                <Subtract class="min-h-screen" />
-                <ToDoList class="absolute left-28 top-32" />
+            <div class="h-screen flex justify-center relative bg-no-repeat bg-cover bg-right bg-[url('/images/Subtract.png')] mr-16">
+                <ToDoList class="mr-36 mt-40"  />
             </div>
 
             <div class="flex justify-center items-center">

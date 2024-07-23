@@ -2,6 +2,12 @@
 import ButtonContainer from '@/Assets/ButtonContainer.vue';
 import TreeBackground from '@/Assets/TreeBackground.vue';
 
+const emit = defineEmits(['open']);
+
+const openPoppup = () => {
+    emit('open')
+};
+
 
 const buttonText = "Add a Plant, Child";
 </script>
@@ -13,6 +19,6 @@ const buttonText = "Add a Plant, Child";
             <img class="relative" src="/images/Tree.svg" />
         </div>
         <p class="pt-16 w-80 text-2xl text-center text-header-background">You don't have any Plants in your Garden.</p>
-        <ButtonContainer :buttonText="buttonText"></ButtonContainer>
+        <ButtonContainer @click="openPoppup" :buttonText="buttonText"></ButtonContainer>
     </div>
 </template>

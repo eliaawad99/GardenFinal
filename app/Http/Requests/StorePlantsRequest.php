@@ -23,6 +23,8 @@ class StorePlantsRequest extends FormRequest
     {
         return [
             'name' => ['required'],
+            'image' => ['nullable', 'image'],
+            'imageUrl' => ['nullable'],
             'species' => ['required'],
             'watering' => ['required', 'integer', 'between:0,5'],
             'date_planted' => ['required', 'date', 'before_or_equal:today'],
@@ -33,11 +35,5 @@ class StorePlantsRequest extends FormRequest
             'humidity' => ['required'],
             'notes' => ['required']
         ];
-    }
-    protected function prepareForValidation()
-    {
-        $this->merge([
-            'user_id' => auth()->id(),
-        ]);
     }
 }

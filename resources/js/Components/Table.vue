@@ -3,7 +3,8 @@ import ArrowIcon from "@/Assets/ArrowIcon.vue";
 import EditButton from "@/Assets/EditButton.vue";
 import EmptyImage from "@/Assets/EmptyImage.vue";
 import OpenImage from "@/Components/OpenImage.vue";
-import { defineProps, ref } from "vue";
+import OpenNotes from '@/Components/OpenNotes.vue';
+import { defineProps, onMounted, ref } from "vue";
 import Sun from "./Sun.vue";
 import Water from "./Water.vue";
 
@@ -11,7 +12,12 @@ const props = defineProps({
     plants: Object,
 });
 
-const emit = defineEmits(['edit']);
+const uri = window.location.search.substring(1);
+const params = new URLSearchParams(uri);
+const urlOrder = ref(params.get("sortKey"));
+const urlKey = ref(params.get('sortOrder'));
+
+const emit = defineEmits(["edit", "sort"]);
 
 const isOpenImage = ref(false);
 const selectedImage = ref(null);
@@ -22,11 +28,11 @@ const showImage = (imageUrl) => {
 };
 
 const isArrowClicked = ref({
-    name: false,
+    name:  false,
     species: false,
     watering: false,
-    datePlanted: false,
-    soilType: false,
+    date_planted: false,
+    soil_type: false,
     drainage: false,
     fertilizer: false,
     sunlight: false,
@@ -34,35 +40,68 @@ const isArrowClicked = ref({
     notes: false,
 });
 
-const headers = [
-    {title: 'Child Name', type: 'name'},
-    {title: 'Species/ Variety', type: 'species'},
-    {title: 'Watering', type: 'watering'},
-    {title: 'Date Planted', type: 'datePlanted'},
-    {title: 'Soil Type', type: 'soilType'},
-    {title: 'Drainage', type: 'drainage'},
-    {title: 'Fertilizer', type: 'fertilizer'},
-    {title: 'Sunlight', type: 'sunlight'},
-    {title: 'Humidity', type: 'humidity'},
-    {title: 'Notes', type: 'notes'},
-]
+const currentSortKey = ref(null || urlOrder);
+const currentSortOrder = ref(null);
 
-const currentSortKey = ref(null);
+onMounted(() => {
+    if (urlKey.value === 'asc'){
+        isArrowClicked.value[urlOrder.value] = true;
+    }
+    else if(urlKey.value === 'desc'){
+        isArrowClicked.value[urlOrder.value] = false;
+    }
+});
+
+const headers = [
+    { title: "Child Name", type: "name" },
+    { title: "Species/ Variety", type: "species" },
+    { title: "Watering", type: "watering" },
+    { title: "Date Planted", type: "date_planted" },
+    { title: "Soil Type", type: "soil_type" },
+    { title: "Drainage", type: "drainage" },
+    { title: "Fertilizer", type: "fertilizer" },
+    { title: "Sunlight", type: "sunlight" },
+    { title: "Humidity", type: "humidity" },
+    { title: "Notes", type: "notes" },
+];
 
 const toggleArrowDirection = (key) => {
     if (currentSortKey.value === key) {
         isArrowClicked.value[key] = !isArrowClicked.value[key];
+        currentSortOrder.value = isArrowClicked.value[key] ? "asc" : "desc";
     } else {
-        Object.keys(isArrowClicked.value).forEach(k => {
+        Object.keys(isArrowClicked.value).forEach((k) => {
             isArrowClicked.value[k] = false;
         });
         isArrowClicked.value[key] = true;
         currentSortKey.value = key;
+        currentSortOrder.value = "asc";
     }
+
+    emit("sort", {
+        sortBy: currentSortKey.value,
+        sortOrder: currentSortOrder.value,
+    });
 };
 
 const handleEdit = (plant) => {
-    emit('edit', plant)
+    emit("edit", plant);
+};
+
+const truncateNotes = (note) => {
+    const maxLength = 10;
+    if (note.length > maxLength) {
+        return note.substring(0, maxLength) + "...";
+    }
+    return note;
+};
+
+const isNotes = ref(false);
+const selectedNotes = ref(null);
+
+const notesPopup = (notes) => {
+    selectedNotes.value = notes;
+    isNotes.value = !isNotes.value;
 };
 
 
@@ -70,7 +109,7 @@ const handleEdit = (plant) => {
 
 <template>
     <div class="overflow-auto max-h-[80%]">
-        <table class="divide-gray-200 border-separate border-spacing-y-2">
+        <table class="divide-gray-200 border-separate border-spacing-y-2 w-full min-w-[1280px]">
             <thead
                 class="bg-transparent h-20 text-custom-yellow"
                 style="
@@ -82,25 +121,27 @@ const handleEdit = (plant) => {
             >
                 <tr>
                     <th></th>
-                    <th class="w-[109px] pl-2" v-for="header in headers">
+                    <th class="min-w-[109px] pl-2" v-for="header in headers">
                         <div
                             class="flex items-center justify-center cursor-pointer"
-                            @click="toggleArrowDirection( header.type )"
+                            @click="toggleArrowDirection(header.type)"
                         >
                             <span class="text-start">{{ header.title }}</span>
                             <ArrowIcon
                                 class="duration-300"
                                 :class="{
                                     'ml-2': true,
-                                    'transform rotate-90': isArrowClicked[header.type],
+                                    'transform rotate-90':
+                                        isArrowClicked[header.type],
                                 }"
                                 :color="
-                                    isArrowClicked[header.type] ? '#E8FF5B' : '#FFF8D2'
+                                    isArrowClicked[header.type]
+                                        ? '#E8FF5B'
+                                        : '#FFF8D2'
                                 "
                             />
                         </div>
                     </th>
-                   
                     <th></th>
                 </tr>
             </thead>
@@ -120,18 +161,23 @@ const handleEdit = (plant) => {
                 >
                     <td class="pl-3">
                         <div class="flex justify-center">
-                            <EmptyImage :imageUrl="plant.image" :width="32" :height="32" @click="showImage(plant.image)"/>
+                            <EmptyImage
+                                :imageUrl="plant.image"
+                                :width="32"
+                                :height="32"
+                                @click="showImage(plant.image)"
+                            />
                         </div>
                     </td>
                     <td
                         class="duration-300"
-                        :class="{ 'text-custom-green': isArrowClicked.name }"
+                        :class="{ 'text-custom-green': isArrowClicked.name || (!isArrowClicked.name && urlOrder ==='name') }"
                     >
                         {{ plant.name }}
                     </td>
                     <td
                         class="duration-300"
-                        :class="{ 'text-custom-green': isArrowClicked.species }"
+                        :class="{ 'text-custom-green': isArrowClicked.species || (!isArrowClicked.species && urlOrder ==='species') }"
                     >
                         {{ plant.species }}
                     </td>
@@ -144,7 +190,7 @@ const handleEdit = (plant) => {
                     <td
                         class="duration-300"
                         :class="{
-                            'text-custom-green': isArrowClicked.datePlanted,
+                            'text-custom-green': isArrowClicked.date_planted || (!isArrowClicked.date_planted && urlOrder ==='date_planted')
                         }"
                     >
                         {{ plant.date_planted }}
@@ -152,7 +198,7 @@ const handleEdit = (plant) => {
                     <td
                         class="duration-300"
                         :class="{
-                            'text-custom-green': isArrowClicked.soilType,
+                            'text-custom-green': isArrowClicked.soil_type || (!isArrowClicked.soil_type && urlOrder ==='soil_type')
                         }"
                     >
                         {{ plant.soil_type }}
@@ -160,7 +206,7 @@ const handleEdit = (plant) => {
                     <td
                         class="duration-300"
                         :class="{
-                            'text-custom-green': isArrowClicked.drainage,
+                            'text-custom-green': isArrowClicked.drainage || (!isArrowClicked.drainage && urlOrder ==='drainage')
                         }"
                     >
                         {{ plant.drainage }}
@@ -168,34 +214,46 @@ const handleEdit = (plant) => {
                     <td
                         class="duration-300"
                         :class="{
-                            'text-custom-green': isArrowClicked.fertilizer,
+                            'text-custom-green': isArrowClicked.fertilizer || (!isArrowClicked.fertilizer && urlOrder ==='fertilizer')
                         }"
                     >
                         {{ plant.fertilizer }}
                     </td>
                     <td>
-                        <Sun class="hover:custom-cursor":sunlight="plant.sunlight"></Sun>
+                        <Sun
+                            class="hover:custom-cursor"
+                            :sunlight="plant.sunlight"
+                        ></Sun>
                     </td>
                     <td
                         class="duration-300"
                         :class="{
-                            'text-custom-green': isArrowClicked.humidity,
+                            'text-custom-green': isArrowClicked.humidity || (!isArrowClicked.humidity && urlOrder ==='humidity')
                         }"
                     >
                         {{ plant.humidity }}
                     </td>
                     <td
                         class="duration-300 overflow-hidden text-ellipsis"
-                        :class="{ 'text-custom-green': isArrowClicked.notes }"
+                        :class="{ 'text-custom-green': isArrowClicked.notes || (!isArrowClicked.notes && urlOrder ==='notes')  }"
+                        @click="notesPopup(plant.notes)"
                     >
-                        {{ plant.notes }}
+                        {{ truncateNotes(plant.notes) }}
                     </td>
                     <td>
-                        <EditButton class="hover:custom-cursor" @click="handleEdit(plant)"></EditButton>
+                        <EditButton
+                            class="hover:custom-cursor"
+                            @click="handleEdit(plant)"
+                        ></EditButton>
                     </td>
                 </tr>
             </tbody>
         </table>
-        <OpenImage :image="selectedImage" v-if="isOpenImage" @close="isOpenImage=false" />
+        <OpenImage
+            :image="selectedImage"
+            v-if="isOpenImage"
+            @close="isOpenImage = false"
+        />
+        <OpenNotes v-if="isNotes" :notes="selectedNotes" @close="isNotes = false" />
     </div>
 </template>
