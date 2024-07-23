@@ -19,10 +19,9 @@ class PlantController extends Controller
 
     public function index(Request $request)
     {
-        $userId = Auth::id(); // Retrieve the authenticated user's ID
+        $userId = Auth::id();
         $query = Plant::query();
 
-        // Filter plants by authenticated user's ID
         $query->where('user_id', $userId);
     
         if ($request->has('searchTest')) {

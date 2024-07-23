@@ -40,9 +40,7 @@ const handleSort = ({sortBy,sortOrder}) => {
 
 const isNoData = computed(() => !params.get("searchTest") && props.plants.data.length === 0);
 
-const noResultsFound = computed(() => {
-    return searchTerm.value && props.plants.data.length === 0;
-});
+const noResultsFound = computed(() =>  searchTerm.value && props.plants.data.length === 0);
 
 const isPopupVisible = ref(false);
 const selectedPlant = ref(null);
