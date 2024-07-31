@@ -128,7 +128,6 @@ const notesPopup = (notes) => {
                         >
                             <span class="text-start">{{ header.title }}</span>
                             <ArrowIcon
-                                class="duration-300"
                                 :class="{
                                     'ml-2': true,
                                     'transform rotate-90':

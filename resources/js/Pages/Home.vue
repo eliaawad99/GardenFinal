@@ -8,7 +8,7 @@ import SearchInput from "@/Components/SearchInput.vue";
 import SideBar from "@/Components/SideBar.vue";
 import Table from "@/Components/Table.vue";
 import { router } from "@inertiajs/vue3";
-import { computed, ref } from "vue";
+import { computed, onMounted, ref } from "vue";
 
 const props = defineProps({
     plants: Object,
@@ -23,6 +23,14 @@ const isNoLink = computed (() => props.plants.data.length === 0);
 const searchTerm = ref(params.get("searchTest") || "");
 const currentSortKey = ref(params.get('sort_by') || null);
 const currentSortOrder = ref(params.get('sort_order') || 'asc');
+
+const searchInputRef = ref(null);
+
+onMounted(() => {
+    if (searchInputRef.value) {
+        searchInputRef.value.focus();
+    }
+});
 
 const performSearch = () => {
     router.get(route("plants.index"), {
@@ -71,9 +79,10 @@ const handleClose = () => {
                     Hi there, {{ $page.props.auth.user.name }}!
                 </p>
                 <SearchInput>
-                    <div class="pl-3 flex items-center">
-                <SearchIcon />
+                    <div class="flex items-center">
+                <SearchIcon class="pl-2"/>
                 <input
+                ref="searchInputRef"
                     class="hover:custom-cursor bg-transparent border-none focus:ring-transparent"
                     type="text"
                     v-model="searchTerm"

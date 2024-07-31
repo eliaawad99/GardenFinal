@@ -43,10 +43,10 @@ class PlantController extends Controller
             }
         }
     
-        $plants = $query->paginate(7);
+        $plants = $query->paginate(7)->withQueryString();
     
         return Inertia::render('Home', [
-            'plants' => $plants,
+            'plants' => $plants
         ]);
     }
     
@@ -69,7 +69,7 @@ class PlantController extends Controller
     {
 
         $user = $request->user();
-        $imageName = null; // Initialize the $imageName variable to null
+        $imageName = null;
         if ($request->hasFile('image')) {
             $image = $request->file('image');
             $imageName = time() . '.' . $image->getClientOriginalExtension();
@@ -119,10 +119,8 @@ class PlantController extends Controller
     public function update(StorePlantsRequest $request, string $id)
     {
 
-        // Find the plant by ID
         $plant = Plant::findOrFail($id);
 
-        // Update the plant's attributes
         $plant->user_id = Auth::user()->id;
         $plant->name = $request->input('name');
         $plant->species = $request->input('species');
@@ -136,7 +134,6 @@ class PlantController extends Controller
         $plant->notes = $request->input('notes');
 
 
-        // Handle image upload if provided
         if ($request->hasFile('image')) {
             $image= $request->file('image');
             $imageName = time() . '.' . $image->getClientOriginalExtension();
@@ -145,10 +142,8 @@ class PlantController extends Controller
         }
 
 
-        // Save the updated plant
         $plant->save();
 
-        // Return a response, redirect to index or other view
         return redirect()->route('plants.index');
     }
 
