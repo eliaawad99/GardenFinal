@@ -26,7 +26,13 @@ class PlantController extends Controller
     
         if ($request->has('searchTest')) {
             $search = $request->searchTest;
-            $query->where('name', 'like', "%$search%");
+            $query->where('name', 'like', "%$search%")
+            ->orWhere('species', 'like', "%$search%")
+            ->orWhere('date_planted', 'like', "%$search%")
+            ->orWhere('soil_type', 'like', "%$search%")
+            ->orWhere('drainage', 'like', "%$search%")
+            ->orWhere('fertilizer', 'like', "%$search%")
+            ->orWhere('humidity', 'like', "%$search%");
         }
     
         if ($request->has('sortKey')) {

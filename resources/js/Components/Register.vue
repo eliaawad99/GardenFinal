@@ -29,7 +29,7 @@ const submit = () => {
             <h1 class="text-custom-green text-3xl leading-normal">
                 Howdy there!
             </h1>
-            <p class="text-center text-custom-gold leading-normal w-[369px]">
+            <p class="text-center text-custom-gold leading-normal w-[370px]">
                 Welcome to To-Dew-List Plant Tracker, we hope you keep all your
                 dandy plants alive!
             </p>
