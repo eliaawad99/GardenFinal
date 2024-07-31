@@ -14,7 +14,7 @@ const togglePopupProfile = () => {
 
 <template>
     <div class="h-full w-full flex items-center">
-        <div class="h-[95%] w-[186px] py-9 ml-4 mr-6 bg-custom-green -skew-y-3 skew-x-[0.25deg] rounded-xl">
+        <div class="h-[95%] w-[185px] py-9 ml-4 mr-6 bg-custom-green -skew-y-3 skew-x-[0.25deg] rounded-xl">
             <div class="h-full flex flex-col justify-between">
                 <div class="flex justify-center">
                     <img src="/images/ToDo.svg">
