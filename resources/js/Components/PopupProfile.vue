@@ -70,11 +70,11 @@ const logout = () => {
             <div class="flex justify-center">
                 <form @submit.prevent="submit" enctype="multipart/form-data">
                     <div
-                        class="flex justify-center items-center bg-input-color h-28 skew-x-3 w-[400px] relative cursor-pointer"
+                        class="flex justify-center items-center bg-input-color h-28 skew-x-3 w-[400px] relative custom-cursor"
                     >
                         <label
                             for="image"
-                            class="absolute inset-0 flex items-center cursor-pointer"
+                            class="absolute inset-0 flex items-center custom-cursor"
                         >
                             <EmptyImage
                                 class="ml-4"
@@ -88,7 +88,7 @@ const logout = () => {
                         <input
                             id="image"
                             type="file"
-                            class="absolute inset-0 opacity-0 cursor-pointer"
+                            class="absolute inset-0 opacity-0 custom-cursor"
                             @change="handleFileUpload"
                         />
                     </div>

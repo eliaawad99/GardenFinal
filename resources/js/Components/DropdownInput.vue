@@ -33,7 +33,7 @@ const selectClass = computed(() => {
 
 <template>
     <select
-    class="bg-input-color skew-x-12 border-0 rounded w-[400px] h-12 px-6 focus:ring-transparent mt-4 block"
+    class="bg-input-color skew-x-12 border-0 rounded w-[400px] h-12 px-6 focus:ring-transparent mt-4 block custom-cursor"
         :class="selectClass"
         :value="modelValue"
         @change="updateValue"

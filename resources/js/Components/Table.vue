@@ -121,7 +121,7 @@ const notesPopup = (notes) => {
                     <th></th>
                     <th class="min-w-[109px] pl-2" v-for="header in headers">
                         <div
-                            class="flex items-center justify-center cursor-pointer"
+                            class="flex items-center justify-center custom-cursor"
                             @click="toggleArrowDirection(header.type)"
                         >
                             <span class="text-start">{{ header.title }}</span>
