@@ -6,15 +6,9 @@ use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
-
 Route::get('/', function(){
-    return Inertia::render('LoginPage');
-})->name('loginPage');
-
-Route::get('/registerPage', function () {
-    return Inertia::render('RegisterPage');
-})->name('registerPage');
-
+    return Inertia::render('Login');
+})->name('login');
 
 Route::middleware('auth')->group(function () {
     Route::get('/plants', [PlantController::class, 'index'])->name('plants.index');
