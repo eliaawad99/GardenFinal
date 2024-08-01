@@ -9,7 +9,7 @@ const props = defineProps({
 </script>
 
 <template>
-    <div class="flex justify-center mt-6">
+    <div class="flex justify-center mt-4">
         <Link class="flex w-6 justify-center custom-cursor bg-cover hover:bg-pagination-hover"
             v-for="link in props.links.filter((_, i) => i !== 0 && i !== props.links.length - 1)" :key="link.label"
             :href="link.url" :class="{

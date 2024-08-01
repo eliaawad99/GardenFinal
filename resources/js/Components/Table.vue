@@ -106,7 +106,7 @@ const notesPopup = (notes) => {
 </script>
 
 <template>
-    <div :class="{'overflow-auto max-h-[80%]': plants.data.length > 0}">
+    <div :class="{'overflow-auto max-h-[85%]': plants.data.length > 0}">
         <table class="divide-gray-200 border-separate border-spacing-y-2 w-full min-w-[1280px]">
             <thead
                 class="bg-transparent h-20 text-custom-yellow"

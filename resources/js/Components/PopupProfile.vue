@@ -49,7 +49,7 @@ const logout = () => {
 
 <template>
     <div
-        class="fixed inset-0 flex justify-center items-center bg-black bg-opacity-50 z-10"
+        class="fixed inset-0 flex justify-center items-center bg-black bg-opacity-50 z-20"
     >
         <div
             class="bg-custom-yellow pl-12 pr-16 pt-11 pb-10 skew-y-1 rounded-tl-[25px] rounded-tr-[40px] rounded-br-[15px] rounded-bl-[30px]"

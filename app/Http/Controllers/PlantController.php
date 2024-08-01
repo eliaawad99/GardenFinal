@@ -26,14 +26,17 @@ class PlantController extends Controller
     
         if ($request->has('searchTest')) {
             $search = $request->searchTest;
-            $query->where('name', 'like', "%$search%")
-            ->orWhere('species', 'like', "%$search%")
-            ->orWhere('date_planted', 'like', "%$search%")
-            ->orWhere('soil_type', 'like', "%$search%")
-            ->orWhere('drainage', 'like', "%$search%")
-            ->orWhere('fertilizer', 'like', "%$search%")
-            ->orWhere('humidity', 'like', "%$search%");
+            $query->where(function($subQuery) use ($search) {
+                $subQuery->where('name', 'like', "%$search%")
+                    ->orWhere('species', 'like', "%$search%")
+                    ->orWhere('date_planted', 'like', "%$search%")
+                    ->orWhere('soil_type', 'like', "%$search%")
+                    ->orWhere('drainage', 'like', "%$search%")
+                    ->orWhere('fertilizer', 'like', "%$search%")
+                    ->orWhere('humidity', 'like', "%$search%");
+            });
         }
+        
     
         if ($request->has('sortKey')) {
             $sortBy = $request->sortKey;
@@ -49,7 +52,7 @@ class PlantController extends Controller
             }
         }
     
-        $plants = $query->paginate(7)->withQueryString();
+        $plants = $query->paginate(6)->withQueryString();
     
         return Inertia::render('Home', [
             'plants' => $plants

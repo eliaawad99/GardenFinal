@@ -90,7 +90,7 @@ const submit = () => {
                     </p>
                     <Link
                         href="/"
-                        class="text-custom-green hover:text-green-500"
+                        class="text-custom-green hover:text-green-500 custom-cursor"
                     >
                         Log in here
                     </Link>

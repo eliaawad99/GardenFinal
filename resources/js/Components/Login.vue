@@ -60,7 +60,7 @@ const submit = () => {
         </form>
         <div class="mt-5 text-xl">
                     <p class="text-custom-gold inline"> Don't have an account?</p>
-                    <Link :href="route('register')" class="text-custom-green hover:text-green-500">
+                    <Link :href="route('register')" class="text-custom-green hover:text-green-500 custom-cursor">
                         Register Here
                     </Link>
                 </div>
