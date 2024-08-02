@@ -14,8 +14,8 @@ const props = defineProps({
 
 const uri = window.location.search.substring(1);
 const params = new URLSearchParams(uri);
-const urlOrder = ref(params.get("sortKey"));
-const urlKey = ref(params.get('sortOrder'));
+const urlKey = ref(params.get("sortKey"));
+const urlOrder = ref(params.get('sortOrder'));
 
 const emit = defineEmits(["edit", "sort"]);
 
@@ -40,15 +40,15 @@ const isArrowClicked = ref({
     notes: false,
 });
 
-const currentSortKey = ref(null || urlOrder);
+const currentSortKey = ref(null || urlKey);
 const currentSortOrder = ref(null);
 
 onMounted(() => {
-    if (urlKey.value === 'asc'){
-        isArrowClicked.value[urlOrder.value] = true;
+    if (urlOrder.value === 'asc'){
+        isArrowClicked.value[urlKey.value] = true;
     }
-    else if(urlKey.value === 'desc'){
-        isArrowClicked.value[urlOrder.value] = false;
+    else if(urlOrder.value === 'desc'){
+        isArrowClicked.value[urlKey.value] = false;
     }
 });
 
@@ -146,15 +146,9 @@ const notesPopup = (notes) => {
                 class="bg-transparent divide-y divide-gray-200 text-center text-header-background"
             >
                 <tr
-                    class="h-[80px]"
+                    class="h-[80px] bg-[url('/images/TableBackgroundBody.svg')] bg-no-repeat bg-cover"
                     v-for="plant in plants.data"
                     :key="plant.id"
-                    style="
-                        background-image: url('/images/TableBackgroundBody.svg');
-                        background: cover;
-                        background-repeat: no-repeat;
-                        background-size: cover;
-                    "
                 >
                     <td class="pl-3">
                         <div class="flex justify-center">
@@ -168,13 +162,13 @@ const notesPopup = (notes) => {
                     </td>
                     <td
                         class="duration-300"
-                        :class="{ 'text-custom-green': isArrowClicked.name || (!isArrowClicked.name && urlOrder ==='name') }"
+                        :class="{ 'text-custom-green': isArrowClicked.name || (!isArrowClicked.name && urlKey ==='name') }"
                     >
                         {{ plant.name }}
                     </td>
                     <td
                         class="duration-300"
-                        :class="{ 'text-custom-green': isArrowClicked.species || (!isArrowClicked.species && urlOrder ==='species') }"
+                        :class="{ 'text-custom-green': isArrowClicked.species || (!isArrowClicked.species && urlKey ==='species') }"
                     >
                         {{ plant.species }}
                     </td>
@@ -187,7 +181,7 @@ const notesPopup = (notes) => {
                     <td
                         class="duration-300"
                         :class="{
-                            'text-custom-green': isArrowClicked.date_planted || (!isArrowClicked.date_planted && urlOrder ==='date_planted')
+                            'text-custom-green': isArrowClicked.date_planted || (!isArrowClicked.date_planted && urlKey ==='date_planted')
                         }"
                     >
                         {{ plant.date_planted }}
@@ -195,7 +189,7 @@ const notesPopup = (notes) => {
                     <td
                         class="duration-300"
                         :class="{
-                            'text-custom-green': isArrowClicked.soil_type || (!isArrowClicked.soil_type && urlOrder ==='soil_type')
+                            'text-custom-green': isArrowClicked.soil_type || (!isArrowClicked.soil_type && urlKey ==='soil_type')
                         }"
                     >
                         {{ plant.soil_type }}
@@ -203,7 +197,7 @@ const notesPopup = (notes) => {
                     <td
                         class="duration-300"
                         :class="{
-                            'text-custom-green': isArrowClicked.drainage || (!isArrowClicked.drainage && urlOrder ==='drainage')
+                            'text-custom-green': isArrowClicked.drainage || (!isArrowClicked.drainage && urlKey ==='drainage')
                         }"
                     >
                         {{ plant.drainage }}
@@ -211,7 +205,7 @@ const notesPopup = (notes) => {
                     <td
                         class="duration-300"
                         :class="{
-                            'text-custom-green': isArrowClicked.fertilizer || (!isArrowClicked.fertilizer && urlOrder ==='fertilizer')
+                            'text-custom-green': isArrowClicked.fertilizer || (!isArrowClicked.fertilizer && urlKey ==='fertilizer')
                         }"
                     >
                         {{ plant.fertilizer }}
@@ -225,14 +219,14 @@ const notesPopup = (notes) => {
                     <td
                         class="duration-300"
                         :class="{
-                            'text-custom-green': isArrowClicked.humidity || (!isArrowClicked.humidity && urlOrder ==='humidity')
+                            'text-custom-green': isArrowClicked.humidity || (!isArrowClicked.humidity && urlKey ==='humidity')
                         }"
                     >
                         {{ plant.humidity }}
                     </td>
                     <td
-                        class="duration-300 overflow-hidden text-ellipsis"
-                        :class="{ 'text-custom-green': isArrowClicked.notes || (!isArrowClicked.notes && urlOrder ==='notes')  }"
+                        class="duration-300"
+                        :class="{ 'text-custom-green': isArrowClicked.notes || (!isArrowClicked.notes && urlKey ==='notes')  }"
                         @click="notesPopup(plant.notes)"
                     >
                         {{ truncateNotes(plant.notes) }}
@@ -250,7 +244,7 @@ const notesPopup = (notes) => {
             :image="selectedImage"
             v-if="isOpenImage"
             @close="isOpenImage = false"
-        />
-        <OpenNotes v-if="isNotes" :notes="selectedNotes" @close="isNotes = false" />
+            />
+            <OpenNotes v-if="isNotes" :notes="selectedNotes" @close="isNotes = false" />
     </div>
 </template>

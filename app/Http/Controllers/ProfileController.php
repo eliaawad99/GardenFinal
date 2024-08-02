@@ -65,7 +65,7 @@ class ProfileController extends Controller
             ]);
         }
     
-        return Redirect::route('plants.index')->with('status', 'Profile updated!');
+        return Redirect::route('plants.index');
     }
     
 

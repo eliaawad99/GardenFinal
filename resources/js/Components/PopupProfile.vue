@@ -68,7 +68,7 @@ const logout = () => {
                 <p class="text-cursor custom-cursor" @click="logout">Log Out</p>
             </div>
             <div class="flex justify-center">
-                <form @submit.prevent="submit" enctype="multipart/form-data">
+                <form @submit.prevent="submit">
                     <div
                         class="flex justify-center items-center bg-input-color h-28 skew-x-3 w-[400px] relative custom-cursor"
                     >
